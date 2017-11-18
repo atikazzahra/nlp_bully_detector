@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Bully Detector</title>
+    <link href="../assets/theme.css" rel="stylesheet">
+    <link href="../assets/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="../assets/jquery.js"></script>
+    <script type="text/javascript" src="../assets/script.js"></script>
+    <script type="text/javascript" src="../assets/bootstrap.js"></script>
+</head>
+ 
+<body>
+    <div class="container">
+        <div class="contents">
+            <div class="header">
+                <!--<span class="header__subtitle">Bully Detector</span>-->
+                <span class="header__title">Check, maybe you've hurt someone</span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills nav-stacked">
+                      <li class="active"><a data-toggle="tab" href="#tweet">Tweet</a></li>
+                      <li><a data-toggle="tab" href="#user">User</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div id="tweet" class="tab-pane fade in active">
+                            <div class="form-contents">
+                                <form action="{{ url_for('results') }}" method="post">
+                                    <div class="form-contents__inputs">
+                                        <textarea rows="4" name="check_tweet" placeholder="Put the things you want to say here"></textarea>
+                                        <input type="submit" value="Check this">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    
+
+                        <div id="user" class="tab-pane fade">
+                            <div class="form-contents">
+                                <form action="{{ url_for('results') }}" method="post">
+                                    <div class="form-contents__inputs">
+                                        <input type="text" name="check_user" placeholder="The username">
+                                        <input type="submit" value="Check this person">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <p>&copy; KAM 2017 - Bullying Detector </p>
+        </footer>
+    </div>
+</body>
+ 
+</html>

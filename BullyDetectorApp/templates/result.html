@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Bully Detector</title>
+    <link href="../assets/theme.css" rel="stylesheet">
+    <link href="../assets/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="../assets/jquery.js"></script>
+    <script type="text/javascript" src="../assets/script.js"></script>
+    <script type="text/javascript" src="../assets/bootstrap.js"></script>
+</head>
+
+{% macro meantweets(bullytweet, bullyword) -%}
+    <div class="mean-tweet">
+        {% set update_temp = {'text': bullytweet|lower} %}
+        {% for word in bullyword: %}
+            {% set sentence = update_temp.text|replace(" "+word, "<span class='harmful-word'> "+word+"</span>") %}
+            {% if update_temp.update({'text':sentence}) %} {% endif %}
+        {% endfor %}
+        {% autoescape false %}
+            {{ update_temp.text }}
+        {% endautoescape %}
+    </div>
+{%- endmacro %}
+<body>
+    <div class="container">
+        <div class="contents">
+            {% if result['isbully'][0] == 0: %}
+            <div class="header">    
+                <span class="header__title">Nice! 
+                {% if 'username' in result.keys(): %}
+                    @{% print result['username'] %} are not detected as a cyber bully</span>
+                    <span class="header__subtitle">Good going!</span>
+                {% else: %}
+                    You can tweet it</span>
+                {% endif %}
+            </div>
+                <div class="result_detail">
+                {% if result['bully_tweets']|length > 1: %}
+                    <p>But, these tweets of @{{result['username']}}'s might have hurt someone</p>
+                    {% for i in range(0, result['bully_tweets']|length): %}
+                        {{ meantweets(result['bully_tweets'][i], result['bully_words'][i]) }}
+                    {% endfor %}
+                {% else: %}
+                    {% if 'username' in result.keys(): %}
+                    <p>None of @{{ result['username'] }}'s tweet is harmful</p>
+                    {% else: %}
+                    <div class="mean-tweet">
+                        {{result['original_tweets'][0]}}
+                    </div>
+                    {% endif %}
+                {% endif %}
+                </div>
+            {% else %}
+            <div class="header">
+                <span class="header__title">Oh no, 
+                {% if 'username' in result.keys(): %}
+                     @{% print result['username'] %} are detected as a cyber bully</span>
+                    </div> <!-- close header -->
+
+                    <div class="result_detail">
+                    <p>These tweets of yours might have hurt someone</p>
+                    {% for i in range(0, result['bully_tweets']|length): %}
+                        {{ meantweets(result[bully_tweets][i], result['bully_words'][i]) }}
+                    {% endfor %}
+                    </div>
+                {% else: %}
+                    please don't say mean things like this</span>
+                    </div> <!-- close header -->
+                    <div class="result_detail">
+                        <div class="mean-tweet">
+                            {{ meantweets(result['bully_tweets'][0], result['bully_words'][0]) }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+            <a href="/" class="button_back">Check another thing</a>
+        </div>
+        <footer class="footer">
+            <p>&copy; KAM 2017 - Bullying Detector </p>
+        </footer>
+    </div>
+</body>
+ 
+</html>
